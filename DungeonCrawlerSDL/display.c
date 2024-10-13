@@ -8,9 +8,9 @@ void setUpWindow(Displayer* d) {
 }
 
 void displayOnWindow(Displayer* d, Player* p) {
-	SDL_Surface* wall = SDL_LoadBMP("wall.bmp");
-	SDL_Surface* path = SDL_LoadBMP("path.bmp");
-	SDL_Surface* door = SDL_LoadBMP("door.bmp");
+	SDL_Surface* wall = SDL_LoadBMP("images/wall.bmp");
+	SDL_Surface* path = SDL_LoadBMP("images/path.bmp");
+	SDL_Surface* door = SDL_LoadBMP("images/door.bmp");
 
 	Tile t = p->location[playerPos(p)];
 

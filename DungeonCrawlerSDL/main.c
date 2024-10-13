@@ -18,7 +18,7 @@ int main() {
 	p.location = 0;
 
 	Floor dungeon[5];
-	readMap(dungeon[0], "floor1.flr");
+	readMap(dungeon[0], "maps/floor1.flr");
 
 	for (int i = 0; i < FLOOR_SIZE; ++i) {
 		if (!(i % FLOOR_WIDTH) && i) printf("\n");
