@@ -106,6 +106,13 @@ Wall getWall(Tile tile, Cardinal cardinal);
 void setWall(Tile* tile, Cardinal cardinal, Wall wall);
 
 /*
+* Returns the index in the map corresponding to the X and Y coordinates.
+* @x : X.
+* @y : Y.
+*/
+int posFromXY(unsigned int x, unsigned int y);
+
+/*
 * Returns the index where the Player "is" in his location array.
 * @player : a pointer to the player.
 */

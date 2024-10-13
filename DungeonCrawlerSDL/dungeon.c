@@ -24,8 +24,12 @@ void setWall(Tile* tile, Cardinal cardinal, Wall wall) {
 	*tile += (wall & 0x0f) << (cardinal * 4); // set the wall to the new one 
 }
 
+int posFromXY(unsigned int x, unsigned int y) {
+	return x + y * FLOOR_WIDTH;
+}
+
 int playerPos(Player* player) {
-	return player->x + player->y * FLOOR_WIDTH;
+	return posFromXY(player->x, player->y);
 }
 
 void playMap(Player* player, Dungeon dungeon, unsigned short position) {

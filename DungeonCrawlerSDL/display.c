@@ -5,17 +5,51 @@ void setUpWindow(Displayer* d) {
 	d->window = SDL_CreateWindow("SPACEJUNK", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 								SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	d->surface = SDL_GetWindowSurface(d->window);
+	SDL_SetSurfaceBlendMode(d->surface, SDL_BLENDMODE_ADD);
 }
 
 void displayOnWindow(Displayer* d, Player* p) {
-	SDL_Surface* wall = SDL_LoadBMP("images/wall.bmp");
-	SDL_Surface* path = SDL_LoadBMP("images/path.bmp");
+	SDL_Surface* wall = SDL_LoadBMP("images/wall.bmp"); // Load all the textures.
+	SDL_Surface* wallL = SDL_LoadBMP("images/wall_L.bmp");
+	SDL_Surface* wallR = SDL_LoadBMP("images/wall_R.bmp");
+	SDL_Surface* wallLR = SDL_LoadBMP("images/wall_LR.bmp");
+	SDL_Surface* wallF = SDL_LoadBMP("images/wall_F.bmp");
 	SDL_Surface* door = SDL_LoadBMP("images/door.bmp");
+	SDL_Surface* doorL = SDL_LoadBMP("images/door_L.bmp");
+	SDL_Surface* doorR = SDL_LoadBMP("images/door_R.bmp");
+	SDL_Surface* doorLR = SDL_LoadBMP("images/door_LR.bmp");
+	SDL_Surface* doorF = SDL_LoadBMP("images/door_F.bmp");
+	SDL_Surface* pathF = SDL_LoadBMP("images/path_F.bmp");
+	SDL_Surface* pathLR = SDL_LoadBMP("images/path_LR.bmp");
 
-	Tile t = p->location[playerPos(p)];
+	SDL_Rect middle, right; // Coordinates on the screen.
+	middle.y = right.y = 0;
+	middle.x = 150;
+	right.x = 450;
 
-	switch (getNibble(t, p->direction))
-	{
+	unsigned char xF, yF, xL, yL, xR, yR; // Coordinates in the map.
+	xF = xL = xR = p->x;
+	yF = yL = yR = p->y;
+
+	switch (p->direction) { // Set them accordingly.
+	case NORTH:
+		--yF; --yL; --yR; --xL; ++xR; break;
+	case SOUTH:
+		++yF; ++yL; ++yR; ++xL; --xR; break;
+	case WEST:
+		--xF; --xL; --xR; --yL; ++yR; break;
+	case EAST:
+		++xF; ++xL; ++xR; ++yL; --yR; break;
+	}
+
+	Tile tC = p->location[playerPos(p)];
+	Tile tF;
+	Tile tL;
+	Tile tR;
+
+	SDL_FillRect(d->surface, NULL, SDL_MapRGB(d->surface->format, 0, 0, 0)); // Clear the surface.
+
+	switch (getNibble(tC, p->direction)) { // Whole screen.
 	case W_WALL:
 		SDL_BlitSurface(wall, NULL, d->surface, NULL);
 		break;
@@ -23,13 +57,75 @@ void displayOnWindow(Displayer* d, Player* p) {
 		SDL_BlitSurface(door, NULL, d->surface, NULL);
 		break;
 	default:
-		SDL_BlitSurface(path, NULL, d->surface, NULL);
+		tF = p->location[posFromXY(xF, yF)];
+
+		switch (getNibble(tF, (p->direction+3)%4)) { // Left part of the screen.
+		case W_WALL:
+			SDL_BlitSurface(wallL, NULL, d->surface, NULL);
+			break;
+		case W_DOOR:
+			SDL_BlitSurface(doorL, NULL, d->surface, NULL);
+			break;
+		default:
+			tL = p->location[posFromXY(xL, yL)];
+			switch (getNibble(tL, p->direction)) {
+			case W_WALL:
+				SDL_BlitSurface(wallLR, NULL, d->surface, NULL);
+				break;
+			case W_DOOR:
+				SDL_BlitSurface(doorLR, NULL, d->surface, NULL);
+				break;
+			default:
+				SDL_BlitSurface(pathLR, NULL, d->surface, NULL);
+			}
+			break;
+		}
+
+		switch (getNibble(tF, (p->direction+1)%4)) { // Right part of the screen.
+		case W_WALL:
+			SDL_BlitSurface(wallR, NULL, d->surface, &right);
+			break;
+		case W_DOOR:
+			SDL_BlitSurface(doorR, NULL, d->surface, &right);
+			break;
+		default:
+			tR = p->location[posFromXY(xR, yR)];
+			switch (getNibble(tR, p->direction)) {
+			case W_WALL:
+				SDL_BlitSurface(wallLR, NULL, d->surface, &right);
+				break;
+			case W_DOOR:
+				SDL_BlitSurface(doorLR, NULL, d->surface, &right);
+				break;
+			default:
+				SDL_BlitSurface(pathLR, NULL, d->surface, &right);
+			}
+			break;
+		}
+
+		switch (getNibble(tF, p->direction)) { // Middle part of the screen.
+		case W_WALL:
+			SDL_BlitSurface(wallF, NULL, d->surface, &middle);
+			break;
+		case W_DOOR:
+			SDL_BlitSurface(doorF, NULL, d->surface, &middle);
+			break;
+		default:
+			SDL_BlitSurface(pathF, NULL, d->surface, &middle);
+		}
+		break;
+
 		break;
 	}
+
+	// addCoordinates(Displayer* d, Player* p);
 
 	SDL_UpdateWindowSurface(d->window);
 
 	SDL_FreeSurface(wall);
-	SDL_FreeSurface(path);
 	SDL_FreeSurface(door);
+}
+
+void addCoordinates(Displayer* d, Player* p) {
+	// WORK IN PROGRESS
 }

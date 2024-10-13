@@ -14,4 +14,6 @@ void setUpWindow(Displayer* d);
 
 void displayOnWindow(Displayer* d, Player* p);
 
+void addCoordinates(Displayer* d, Player* p);
+
 #endif
