@@ -90,7 +90,7 @@ char getBit(unsigned short flags, char bit);
 * @bit : the index of the bit.
 * @value : the value of the bit (modulo 2).
 */
-void setBit(unsigned int* flags, char bit, char value);
+void setBit(unsigned short* flags, char bit, char value);
 
 /*
 * Does the same as getNibble().
