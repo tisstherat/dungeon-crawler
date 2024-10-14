@@ -119,7 +119,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 		break;
 	}
 
-	// addCoordinates(Displayer* d, Player* p); I need to figure out how to display text...
+	addCoordinates(d,p);
 
 	SDL_UpdateWindowSurface(d->window); // Display the result on the screen once we're done.
 
@@ -138,5 +138,21 @@ void displayOnWindow(Displayer* d, Player* p) {
 }
 
 void addCoordinates(Displayer* d, Player* p) {
-	// WORK IN PROGRESS
+	SDL_Surface* compass;
+	SDL_Rect comPos; // Compass position, top right of the screen with a 10px X and Y offset.
+	comPos.x = SCREEN_WIDTH - 60; // I put 60 because it's the image width + 10.
+	comPos.y = 10;
+	switch (p->direction) {
+	case NORTH:
+		compass = SDL_LoadBMP("images/compass_N.bmp"); break;
+	case EAST:
+		compass = SDL_LoadBMP("images/compass_E.bmp"); break;
+	case SOUTH:
+		compass = SDL_LoadBMP("images/compass_S.bmp"); break;
+	default: // WEST.
+		compass = SDL_LoadBMP("images/compass_W.bmp"); break;
+	}
+
+	SDL_BlitSurface(compass, NULL, d->surface, &comPos);
+	SDL_FreeSurface(compass); // Free the surface.
 }
