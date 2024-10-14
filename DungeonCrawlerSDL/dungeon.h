@@ -106,6 +106,13 @@ Wall getWall(Tile tile, Cardinal cardinal);
 void setWall(Tile* tile, Cardinal cardinal, Wall wall);
 
 /*
+* Returns weither the coordinates fit into the map or not.
+* @x : X.
+* @y : Y.
+*/
+int areXYValid(unsigned int x, unsigned int y);
+
+/*
 * Returns the index in the map corresponding to the X and Y coordinates.
 * @x : X.
 * @y : Y.

@@ -37,15 +37,15 @@ void displayOnWindow(Displayer* d, Player* p) {
 	case SOUTH:
 		++yF; ++yL; ++yR; ++xL; --xR; break;
 	case WEST:
-		--xF; --xL; --xR; --yL; ++yR; break;
+		--xF; --xL; --xR; ++yL; --yR; break;
 	case EAST:
-		++xF; ++xL; ++xR; ++yL; --yR; break;
+		++xF; ++xL; ++xR; --yL; ++yR; break;
 	}
 
 	Tile tC = p->location[playerPos(p)];
-	Tile tF;
-	Tile tL;
-	Tile tR;
+	Tile tF =0;
+	Tile tL =0;
+	Tile tR =0;
 
 	SDL_FillRect(d->surface, NULL, SDL_MapRGB(d->surface->format, 0, 0, 0)); // Clear the surface.
 
@@ -57,7 +57,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 		SDL_BlitSurface(door, NULL, d->surface, NULL);
 		break;
 	default:
-		tF = p->location[posFromXY(xF, yF)];
+		if(areXYValid(xF,yF)) tF = p->location[posFromXY(xF, yF)];
 
 		switch (getNibble(tF, (p->direction+3)%4)) { // Left part of the screen.
 		case W_WALL:
@@ -67,7 +67,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 			SDL_BlitSurface(doorL, NULL, d->surface, NULL);
 			break;
 		default:
-			tL = p->location[posFromXY(xL, yL)];
+			if (areXYValid(xL, yL)) tL = p->location[posFromXY(xL, yL)];
 			switch (getNibble(tL, p->direction)) {
 			case W_WALL:
 				SDL_BlitSurface(wallLR, NULL, d->surface, NULL);
@@ -89,7 +89,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 			SDL_BlitSurface(doorR, NULL, d->surface, &right);
 			break;
 		default:
-			tR = p->location[posFromXY(xR, yR)];
+			if (areXYValid(xF, yF)) tR = p->location[posFromXY(xR, yR)];
 			switch (getNibble(tR, p->direction)) {
 			case W_WALL:
 				SDL_BlitSurface(wallLR, NULL, d->surface, &right);

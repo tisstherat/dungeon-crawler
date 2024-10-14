@@ -24,6 +24,10 @@ void setWall(Tile* tile, Cardinal cardinal, Wall wall) {
 	*tile += (wall & 0x0f) << (cardinal * 4); // set the wall to the new one 
 }
 
+int areXYValid(unsigned int x, unsigned int y) {
+	return x >= 0 && x < FLOOR_WIDTH && y >= 0 && y < FLOOR_WIDTH;
+}
+
 int posFromXY(unsigned int x, unsigned int y) {
 	return x + y * FLOOR_WIDTH;
 }
