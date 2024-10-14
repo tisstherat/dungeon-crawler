@@ -42,14 +42,15 @@ void displayOnWindow(Displayer* d, Player* p) {
 		++xF; ++xL; ++xR; --yL; ++yR; break;
 	}
 
-	Tile tC = p->location[playerPos(p)];
-	Tile tF =0;
+	Tile tC = p->location[playerPos(p)]; // Set up the tiles.
+	Tile tF =0; // Initialize them to zero just in case there are holes in the outer walls.
 	Tile tL =0;
 	Tile tR =0;
 
 	SDL_FillRect(d->surface, NULL, SDL_MapRGB(d->surface->format, 0, 0, 0)); // Clear the surface.
 
-	switch (getNibble(tC, p->direction)) { // Whole screen.
+	// This part is a whole hell of switches, could probably make it all shorter.
+	switch (getNibble(tC, p->direction)) { // Whole screen display.
 	case W_WALL:
 		SDL_BlitSurface(wall, NULL, d->surface, NULL);
 		break;
@@ -59,7 +60,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 	default:
 		if(areXYValid(xF,yF)) tF = p->location[posFromXY(xF, yF)];
 
-		switch (getNibble(tF, (p->direction+3)%4)) { // Left part of the screen.
+		switch (getNibble(tF, (p->direction+3)%4)) { // Left part of the screen display.
 		case W_WALL:
 			SDL_BlitSurface(wallL, NULL, d->surface, NULL);
 			break;
@@ -81,7 +82,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 			break;
 		}
 
-		switch (getNibble(tF, (p->direction+1)%4)) { // Right part of the screen.
+		switch (getNibble(tF, (p->direction+1)%4)) { // Right part of the screen display.
 		case W_WALL:
 			SDL_BlitSurface(wallR, NULL, d->surface, &right);
 			break;
@@ -103,7 +104,7 @@ void displayOnWindow(Displayer* d, Player* p) {
 			break;
 		}
 
-		switch (getNibble(tF, p->direction)) { // Middle part of the screen.
+		switch (getNibble(tF, p->direction)) { // Middle part of the screen display.
 		case W_WALL:
 			SDL_BlitSurface(wallF, NULL, d->surface, &middle);
 			break;
@@ -118,12 +119,22 @@ void displayOnWindow(Displayer* d, Player* p) {
 		break;
 	}
 
-	// addCoordinates(Displayer* d, Player* p);
+	// addCoordinates(Displayer* d, Player* p); I need to figure out how to display text...
 
-	SDL_UpdateWindowSurface(d->window);
+	SDL_UpdateWindowSurface(d->window); // Display the result on the screen once we're done.
 
-	SDL_FreeSurface(wall);
+	SDL_FreeSurface(wall); // Unload all the textures.
+	SDL_FreeSurface(wallL);
+	SDL_FreeSurface(wallR);
+	SDL_FreeSurface(wallLR);
+	SDL_FreeSurface(wallF);
 	SDL_FreeSurface(door);
+	SDL_FreeSurface(doorL);
+	SDL_FreeSurface(doorR);
+	SDL_FreeSurface(doorLR);
+	SDL_FreeSurface(doorF);
+	SDL_FreeSurface(pathLR);
+	SDL_FreeSurface(pathF);
 }
 
 void addCoordinates(Displayer* d, Player* p) {
