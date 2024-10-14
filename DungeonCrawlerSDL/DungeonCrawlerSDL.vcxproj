@@ -143,11 +143,11 @@
     <ClInclude Include="dungeon.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="floor1.flr" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\..\..\..\Pictures\path.bmp" />
     <Image Include="..\..\..\..\Pictures\wall.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="maps\floor1.flr" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

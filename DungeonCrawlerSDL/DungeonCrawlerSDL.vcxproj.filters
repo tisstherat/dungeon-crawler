@@ -43,14 +43,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="floor1.flr" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\..\..\..\Pictures\wall.bmp">
       <Filter>Images</Filter>
     </Image>
     <Image Include="..\..\..\..\Pictures\path.bmp">
       <Filter>Images</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="maps\floor1.flr">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
   </ItemGroup>
 </Project>
